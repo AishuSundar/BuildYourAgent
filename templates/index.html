@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Data Science Assistant — Upload</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="p-4">
+    <div class="container">
+      <h1>Data Science Assistant — Demo (Flask)</h1>
+      <p>Upload a CSV or choose a sample dataset to run automated EDA and get LLM recommendations.</p>
+
+      <form action="/analyze" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Upload CSV</label>
+          <input class="form-control" type="file" name="file" accept=".csv">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Or choose a sample dataset</label>
+          <select class="form-select" name="sample">
+            <option value="">-- none --</option>
+            {% for s in samples %}
+            <option value="{{ s }}">{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Run EDA</button>
+      </form>
+
+      <hr/>
+      <p>Sample datasets are stored in <code>sample_data/</code>.</p>
+    </div>
+  </body>
+</html>

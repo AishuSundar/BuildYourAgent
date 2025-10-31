@@ -1,0 +1,17 @@
+pip
+flask>=2.0
+pandas>=2.0
+numpy
+matplotlib
+seaborn
+plotly
+langchain>=0.0.300
+openai
+python-dotenv
+langgraph
+
+# Optional: if your langchain version needs a chat model interface
+azure-core
+azure-identity
+
+

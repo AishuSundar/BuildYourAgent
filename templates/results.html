@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDA Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="p-4">
+    {% if interpretation %}
+    <div class="alert alert-info" style="margin-top:20px;">
+      <h4>User-Friendly Summary</h4>
+      <p>{{ interpretation }}</p>
+    </div>
+    {% endif %}
+    <div class="container">
+      <h1>EDA Results</h1>
+
+      <h3>Recommendations <small class="text-muted">(LLM: {{ used_llm }})</small></h3>
+      <pre>{{ recommendations }}</pre>
+
+      {% if actionable and actionable|length > 0 %}
+      <h3>Actionable recommendations</h3>
+      <ol>
+      {% for r in actionable %}
+        <li>
+          <form method="post" action="/apply_action">
+            <input type="hidden" name="action_type" value="{{ r.action.type if r.action else '' }}" />
+            <input type="hidden" name="columns" value="{{ r.action.columns | join(',') if r.action and r.action.columns else '' }}" />
+            <input type="hidden" name="csv_path" value="{{ csv_path }}" />
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{{ r.title }}</strong>
+                <span class="badge bg-secondary">{{ r.priority }}</span>
+                <p>{{ r.detail }}</p>
+              </div>
+              <div>
+                {% if r.action %}
+                <button class="btn btn-sm btn-primary" type="submit">Apply</button>
+                {% else %}
+                <button class="btn btn-sm btn-secondary" type="button" disabled>—</button>
+                {% endif %}
+              </div>
+            </div>
+          </form>
+        </li>
+      {% endfor %}
+      </ol>
+      {% else %}
+      <h3>Actionable recommendations</h3>
+      <p><em>No actionable recommendations were generated.</em></p>
+      {% endif %}
+
+      {% if transformed_download %}
+      <div class="alert alert-success">
+        Transformed CSV available: <a href="/{{ transformed_download }}" download>Download</a>
+      </div>
+      {% endif %}
+
+      <h3>Top missing values</h3>
+      <div>{{ missing_html | safe }}</div>
+
+      <h3>Numeric summary</h3>
+      <div>{{ stats_html | safe }}</div>
+
+      {% if heatmap_url %}
+      <h3>Correlation heatmap</h3>
+      <img src="{{ heatmap_url }}" class="img-fluid" />
+      {% endif %}
+
+      {% if hist_imgs %}
+      <h3>Histograms</h3>
+      <div class="row">
+        {% for name, url in hist_imgs %}
+        <div class="col-md-4 mb-3">
+          <img src="{{ url }}" class="img-fluid" alt="{{ name }}" />
+          <div class="small">{{ name }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if pairplot_url %}
+      <h3>Pairplot</h3>
+      <img src="{{ pairplot_url }}" class="img-fluid" />
+      {% endif %}
+
+      <hr/>
+      <a href="/">Run another dataset</a>
+    </div>
+  </body>
+</html>
