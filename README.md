@@ -10,27 +10,22 @@ What it does
 
 Quick start (Windows PowerShell) — no conda
 
-1) Create and activate a venv:
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
 
-2) Upgrade pip and install dependencies:
+1) Upgrade pip and install dependencies:
 
 ```powershell
 python -m pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-3) Configure environment variables
+2) Configure environment variables
 - Copy `.env.example` -> `.env` and fill values if you plan to use Azure OpenAI. The variables are:
 	- `AZURE_OPENAI_ENDPOINT` (e.g. https://your-resource.openai.azure.com)
 	- `AZURE_OPENAI_KEY`
 	- `AZURE_OPENAI_DEPLOYMENT` (model deployment name)
 
-4) Run the Flask demo
+3) Run the Flask demo
 
 ```powershell
 python flask_app.py
